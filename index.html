@@ -1,0 +1,110 @@
+<html>
+
+<head>
+    <title>Cutlery Detector</title>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+
+    <link href="css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script>
+        const Url = 'http://127.0.0.1:5000/predict'
+
+        window.addEventListener('load', function () {
+            document.querySelector('input[type="file"]').addEventListener('change', function () {
+                if (this.files && this.files[0]) {
+                    var img = document.getElementById('imageData');
+                    img.src = URL.createObjectURL(this.files[0]);
+
+                    var data = new FormData()
+                    data.append('file', this.files[0])
+
+                    fetch(Url, {
+                        method: 'POST',
+                        body: data
+                    })
+                        .then(response => response.json())
+                        .then(response => document.getElementById('classText').innerHTML = response.class_name)
+                        .catch(error => console.log(error))
+                }
+            });
+        });
+    </script>
+    <style>
+    </style>
+</head>
+
+<body>
+    <!-- <input type='file' />
+        <br><br>
+        <img id="imageData" src="#" alt="your image" height=300>
+        <br><br>
+        <h2 id="classText"></h2> -->
+
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#" style="font-family: 'Open Sans';color: #0d6d6a;">Deep Learning</a>
+    </nav>
+
+
+
+    <div class="container py-5">
+
+        <!-- For demo purpose -->
+        <header class="text-white text-center">
+            <h1 class="display-4" style="font-family: 'Open Sans', 
+            sans-serif;"><b>Cutlery Image Detector</b></h1>
+            <p class="lead mb-0" style="font-family: 'Open Sans', 
+            sans-serif;">Detect your spoon, fork, or chopstick here!</p>
+            <!-- <p class="mb-5 font-weight-light">Snippet by
+                        <u></u>
+                    </a> -->
+            </p>
+            <!-- <img src="https://res.cloudinary.com/mhmd/image/upload/v1564991372/image_pxlho1.svg" alt="" width="150" class="mb-4"> -->
+        </header>
+
+
+        <div class="row py-4">
+            <div class="col-lg-6 mx-auto">
+
+                <!-- Upload image input-->
+                <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm">
+                    <input id="upload" type='file' onchange="readURL(this);" class="form-control border-0">
+                    <label id="upload-label" for="upload" class="font-weight-light text-muted" style="font-family: 'Rubik', sans-serif;">Upload your image</label>
+                    <div class="input-group-append">
+                        <label for="upload" class="btn btn-light m-2 px-4"> <i class="fa fa-cloud-upload mr-2 rounded-pill text-muted"></i><small class="text-uppercase font-weight-bold text-muted"  >Choose file</small></label>
+                    </div>
+                </div>
+
+                <!-- Uploaded image area-->
+                <div>
+                    <p class="text-white text-center"  style="font-family: 'Rubik', 
+                    sans-serif;">Your  image will be detected below.</p>
+                </div>
+                <div class="image-area mt-4"><img id="imageData" src="#" alt="" class="img-fluid rounded shadow-sm mx-auto d-block"></div>
+                <p>
+                <div class="text-white text-center">
+                    <h3 class="display-8" id="classText"></h3>
+                </div>
+                </p>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/scripts.js"></script>
+</body>
+
+</html>
